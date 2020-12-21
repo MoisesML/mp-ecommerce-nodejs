@@ -29,24 +29,24 @@ let comprador = {
     }
 };
 
-let metodos_pago = {
-    installments: 6,
-    exclude_payment_methods: [
+let payment_methods = {
+    excluded_payment_methods: [
         {
-            id: "diner"
+            id: "diners"
         }
     ],
-    exclude_payment_types: [
+    excluded_payment_types: [
         {
             id: "atm"
         }
-    ]
+    ],
+    installments: 6,
 };
 
 let back_urls = {};
 
 let preference = {
-    payment_methods : metodos_pago,
+    payment_methods : payment_methods,
     items : [],
     payer : comprador,
     back_urls : back_urls,
@@ -71,7 +71,7 @@ app.get('/detail', async (req, res) => {
         id: "1234",
         title: req.query.title,
         description: "Dispositivo móvil de Tienda e-commerce",
-        picture_url: req.get("host")+req.query.img.substring(1),
+        picture_url: req.get("host")+'/'+req.query.img.substring(1),
         quantity: +req.query.unit,
         currency_id: "PEN",
         unit_price: +req.query.price
@@ -88,6 +88,8 @@ app.get('/detail', async (req, res) => {
     req.query.id = respuesta.body.id;
     req.query.init_point = respuesta.body.init_point;
     res.render('detail', req.query);
+    console.log(req.query.img.substring(1))
+    console.log(item)
 });
 
 app.get("/success", function(req,res){
