@@ -71,7 +71,7 @@ app.get('/detail', async (req, res) => {
         id: "1234",
         title: req.query.title,
         description: "Dispositivo móvil de Tienda e-commerce",
-        picture_url: req.get("host")+'/'+req.query.img.substring(1),
+        picture_url: req.get("host")+req.query.img.substring(1),
         quantity: +req.query.unit,
         currency_id: "PEN",
         unit_price: +req.query.price
