@@ -88,13 +88,10 @@
                                 </h3>
                                 <h3>
                                     {{ unit }}
-                                    {{init_point}}
                                 </h3>
                             </div>
-                            <script src="https://www.mercadopago.com.pe/integrations/v1/web-payment-checkout.js"
-                                data-preference-id='{{id}}'>
-                                </script>
-                            <button type="submit" onclick="window.location.href='{{init_point}}' " class="mercadopago-button" formmethod="post">Pagar</button>
+                            <button type="submit" onclick="window.location.href='{{init_point}}' "
+                                class="mercadopago-button" formmethod="post">Pagar la compra</button>
                         </div>
                     </div>
                 </div>
@@ -102,3 +99,4 @@
         </div>
     </div>
 </div>
+<script src="https://www.mercadopago.com/v2/security.js" view="item"></script>

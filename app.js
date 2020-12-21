@@ -46,13 +46,13 @@ let metodos_pago = {
 let back_urls = {};
 
 let preference = {
-    items : [],
-    back_urls : back_urls,
     payment_methods : metodos_pago,
+    items : [],
     payer : comprador,
-    auto_return : "approved",
+    back_urls : back_urls,
+    notification_url : "https://moisesml-mp-ecommerce-nodejs.herokuapp.com/notificaciones",
     external_reference : "lazaromoises06@gmail.com",
-    notification_url : ""
+    auto_return : "approved",
 };
  
 app.engine('handlebars', exphbs());
@@ -67,8 +67,6 @@ app.get('/', function (req, res) {
 });
 
 app.get('/detail', async (req, res) => {
-    console.log(req.query)
-    console.log(req.get("host"));
     let item = {
         id: "1234",
         title: req.query.title,
@@ -87,9 +85,8 @@ app.get('/detail', async (req, res) => {
     preference.items.push(item);
     preference.notification_url = `${req.get("host")}/notificaciones`;
     let respuesta = await mercadopago.preferences.create(preference);
-    console.log(respuesta.body.init_point);
-    req.query.init_point = respuesta.body.init_point;
     req.query.id = respuesta.body.id;
+    req.query.init_point = respuesta.body.init_point;
     res.render('detail', req.query);
 });
 
