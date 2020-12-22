@@ -50,7 +50,7 @@ let preference = {
     items : [],
     payer : comprador,
     back_urls : back_urls,
-    notification_url : "https://moisesml-mp-ecommerce-nodejs.herokuapp.com/notificaciones?source_news=webhooks",
+    notification_url : "",
     external_reference : "lazaromoises06@gmail.com",
     auto_return : "approved",
 };
@@ -83,7 +83,7 @@ app.get('/detail', async (req, res) => {
     }
     preference.items = [];
     preference.items.push(item);
-    preference.notification_url = `${req.get("host")}/notificaciones?source_news=webhooks`;
+    preference.notification_url = `https://${req.get("host")}/notificaciones?source_news=webhooks`;
     let respuesta = await mercadopago.preferences.create(preference);
     req.query.id = respuesta.body.id;
     req.query.init_point = respuesta.body.init_point;
@@ -106,8 +106,7 @@ app.get("/failure", function(req,res){
 
 app.post("/notificaciones", function(req, res){
     console.log(req.query);
-    console.log(req.body);
-    res.status(200).send("Notificación recibida")
+    res.status(201).send("Notificación recibida")
 });
 
 app.listen(port);
