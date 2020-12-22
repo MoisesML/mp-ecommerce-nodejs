@@ -88,8 +88,6 @@ app.get('/detail', async (req, res) => {
     req.query.id = respuesta.body.id;
     req.query.init_point = respuesta.body.init_point;
     res.render('detail', req.query);
-    console.log(req.query.img.substring(1))
-    console.log(item)
 });
 
 app.get("/success", function(req,res){
