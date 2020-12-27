@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var exphbs  = require('express-handlebars');
 var port = process.env.PORT || 3000
 const mercadopago = require("mercadopago");
@@ -54,6 +55,15 @@ let preference = {
     external_reference : "lazaromoises06@gmail.com",
     auto_return : "approved",
 };
+
+app.use((req, res, next)=>{
+    res.header('Access-Control-Allow-Origin','*');
+    res.header('Access-Control-Allow-Headers','Authorization, Content-Type');
+    res.header('Access-Control-Allow-Methods','GET, POST');
+    next();
+});
+
+app.use(bodyParser.json());
  
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
@@ -104,6 +114,7 @@ app.get("/failure", function(req,res){
 
 app.post("/notificaciones", function(req, res){
     console.log(req.query);
+    console.log(req.body);
     res.status(201).send("Notificación recibida")
 });
 
