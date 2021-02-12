@@ -11,13 +11,13 @@ mercadopago.configure({
     integrator_id : "dev_2e4ad5dd362f11eb809d0242ac130004"
 });
 
-let comprador = {
+let payer = {
     name: "Lalo",
     surname: "Landa",
     email: "test_user_46542185@testuser.com",
     phone: {
-        area_code:"52",
-        number: 5549737300
+        number: 5549737300,
+        area_code:"52"
     },
     identification:{
         type:"DNI",
@@ -31,6 +31,7 @@ let comprador = {
 };
 
 let payment_methods = {
+    installments: 6,
     excluded_payment_methods: [
         {
             id: "diners"
@@ -40,8 +41,7 @@ let payment_methods = {
         {
             id: "atm"
         }
-    ],
-    installments: 6,
+    ]
 };
 
 let back_urls = {};
@@ -49,7 +49,7 @@ let back_urls = {};
 let preference = {
     payment_methods : payment_methods,
     items : [],
-    payer : comprador,
+    payer : payer,
     back_urls : back_urls,
     notification_url : "",
     external_reference : "lazaromoises06@gmail.com",
@@ -58,8 +58,8 @@ let preference = {
 
 app.use((req, res, next)=>{
     res.header('Access-Control-Allow-Origin','*');
-    res.header('Access-Control-Allow-Headers','Authorization, Content-Type');
-    res.header('Access-Control-Allow-Methods','GET, POST');
+    res.header('Access-Control-Allow-Headers','Authorization, Content-Type, Access-Content-Type, Accept');
+    res.header('Access-Control-Allow-Methods','GET, POST, PUT, DELETE');
     next();
 });
 
@@ -93,7 +93,7 @@ app.get('/detail', async (req, res) => {
     }
     preference.items = [];
     preference.items.push(item);
-    preference.notification_url = `https://${req.get("host")}/notificaciones?source_news=webhooks`;
+    preference.notification_url = `${req.get("host")}/notificaciones`;
     let respuesta = await mercadopago.preferences.create(preference);
     req.query.id = respuesta.body.id;
     req.query.init_point = respuesta.body.init_point;
@@ -113,9 +113,13 @@ app.get("/failure", function(req,res){
 });
 
 app.post("/notificaciones", function(req, res){
+    console.log('Notificacion')
+    console.log('Query')
     console.log(req.query);
+    console.log('Body')
     console.log(req.body);
-    res.status(201).send("Notificación recibida")
+    console.log('Final')
+    res.status(201)
 });
 
 app.listen(port);
